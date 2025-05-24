@@ -1,0 +1,52 @@
+services:
+  backend:
+    build: ./backend
+    container_name: n1_support_bot_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - BOT_NAME=Lulu
+      - OCOMON_API_URL=http://host.docker.internal:8080/api/ocomon_api
+      - OCOMON_APP=teste
+      - OCOMON_LOGIN=operador
+      - OCOMON_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDgxMTczMTMsImV4cCI6MTc0ODk4MTMxMywiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0OjgwODAiLCJkYXRhIjp7InVzZXIiOjIsImxldmVsIjoiMiIsImFwcCI6InRlc3RlIn19._z5_1mW5vzRI0PXuUWOBKNVk_NJ4jloryUBUoqBxrKc
+      - DB_HOST=db
+      - DB_USER=ocomon_6
+      - DB_PASSWORD=senha_ocomon_mysql
+      - DB_NAME=ocomon
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: n1_support_bot_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - BOT_NAME=Lulu
+    depends_on:
+      - backend
+
+  db:
+    image: mariadb:10.6
+    container_name: n1_support_bot_db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=ocomon
+      - MYSQL_USER=ocomon_6
+      - MYSQL_PASSWORD=senha_ocomon_mysql
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:

@@ -56,19 +56,8 @@ n1_support_bot/
 ```
 
 ## Fluxo da Aplicação
+![image](https://github.com/user-attachments/assets/dbe318e5-31c8-4261-924e-05f4cf10f82c)
 
-```
-flowchart TD
-    A[Usuário inicia conversa] --> B[Bot solicita detalhes]
-    B --> C[Usuário descreve problema]
-    C --> D[Busca na base OCOMON]
-    D -->|Encontrou solução| E[Apresenta solução]
-    D -->|Não encontrou| F[Cria ticket]
-    E --> G[Pergunta se resolveu]
-    G -->|Sim| H[Registra sucesso]
-    G -->|Não| F
-    F --> I[Informa número do ticket]
-```
 
 ## Funcionalidades Implementadas
 

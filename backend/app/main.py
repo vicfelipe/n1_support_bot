@@ -73,6 +73,33 @@ async def chat(request: ChatRequest):
     
     # Processar a mensagem do usuário com NLP
     intent, entities = nlp_service.analyze_text(user_message)
+
+    # Exemplo de uso da intent
+    if intent == "search_ticket":
+        ticket_number = 1
+        if ticket_number:
+            ticket_data = ocomon_service.get_ticket(ticket_number)
+            conversations[user_id].add_message(
+                Message(
+                    id=uuid4(),
+                    content=  f"- Número do Ticket: {ticket_data['number']} \n"
+                            + f"\n- Status: {ticket_data['status']}\n"
+                            + f"\n- Data de Abertura: {ticket_data['opening_date']} \n"
+                            + f"\n- Atendido por: {ticket_data['operator']} \n"
+                            + f"\n- SLA de Resposta: {ticket_data['sla_response']} \n"
+                            + f"\n- SLA de Solução: {ticket_data['sla_solution']} \n",
+                            
+                    type=MessageType.BOT
+                )
+            )
+
+            conversations[user_id].add_message(
+                Message(
+                    id=uuid4(),
+                    content="Você deseja saber mais alguma coisa?",
+                    type=MessageType.BOT
+                )
+            )
     
     # Buscar solução na base de conhecimento do OCOMON
     knowledge_results = ocomon_service.search_knowledge_base(user_message)
@@ -103,7 +130,7 @@ async def chat(request: ChatRequest):
         
         # Marcar que estamos esperando confirmação
         conversations[user_id].waiting_for_confirmation = True
-    else:
+    elif intent == "":
         # Não encontrou solução, criar ticket
         ticket_data = {
             "description": user_message,

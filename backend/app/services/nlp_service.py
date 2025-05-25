@@ -65,7 +65,7 @@ class NLPService:
             "email_issue": ["email", "e-mail", "correio", "outlook", "gmail", "mensagem"],
             "performance_issue": ["lento", "travando", "performance", "desempenho", "congelando"],
             "general_inquiry": ["ajuda", "suporte", "informações", "informação", "dúvida", "duvida"],
-            "ticket": ["ticket", "chamado", "suporte", "suporte técnico"],
+            "search_ticket": ["detalhes", "chamado", "ticket", "buscar", "procurar", "buscar ticket", "buscar chamado", "ticket"],
         }
         
         # Contar ocorrências de palavras-chave para cada intenção
